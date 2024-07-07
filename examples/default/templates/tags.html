@@ -1,0 +1,36 @@
+{{define "content"}}
+<main class="tags">
+    <h1>Tags</h1>
+    <div >
+        <ul>
+            {{range .}}
+            <li><a href="/?tag={{.}}">#{{.}}</a></li>
+            {{end}}
+        </ul>
+    </div>
+</main>
+{{end}}
+
+{{define "head-extra"}}
+<style>
+    .tags a {
+        color: light-dark(var(--text), var(--text-dark));
+        font-size: 1.1em;
+
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-decoration-color: light-dark(var(--blue), var(--blue-dark));
+    }
+    .tags a:hover {
+        font-weight: bold;
+    }
+    .tags ul {
+        margin: 0;
+        padding: 0;
+    }
+    .tags li {
+        list-style-type: none;
+        margin: 1.5em 0;
+    }
+</style>
+{{end}}

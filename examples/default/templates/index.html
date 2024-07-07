@@ -1,0 +1,117 @@
+{{define "content"}}
+<main class="home">
+    <h1 id="headline">All posts</h1>
+    <div class="posts">
+        <ul>
+        {{$index:=0}}
+        {{range .}}
+            <li id="post-{{$index}}">
+                <div>
+                    <h2><a href="{{.FilenameHTML}}">{{.Title}}</a></h2>
+
+                </div>
+                <div class="date">{{.Date}}</div>
+                <div class="tags">
+                    {{range .Tags}}
+                    <a href="/?tag={{.}}" data-tag="{{.}}">#{{.}}</a>
+                    {{end}}
+                </div>
+            </li>
+            {{ $index = add $index 1 }}
+        {{end}}
+        </ul>
+    </div>
+</main>
+{{end}}
+
+{{define "head-extra"}}
+<style>
+    .posts h2 a {
+        ;
+        color: light-dark(var(--text), var(--text-dark));
+        text-decoration: none;
+
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-decoration-color: var(--red);
+    }
+    .posts h2 {
+        display: inline;
+    }
+    .posts .date {
+        font-style: italic;
+        color: light-dark(var(--text-gray), var(--text-gray-dark));
+        margin-top: 0.4em;
+    }
+    .posts ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+    .posts li {
+        margin: 1em 0 1.8em 0;
+    }
+    .posts .tags {
+        margin-top: 0.2em;
+    }
+    .posts .tags a {
+        color: light-dark(var(--text), var(--text-dark));
+        text-decoration: none;
+        margin-right: 1em;
+
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-decoration-color: light-dark(var(--blue), var(--blue-dark));
+    }
+    .posts .tags a:hover {
+        font-weight: bold;
+    }
+</style>
+
+<script type="module">
+    document.addEventListener("DOMContentLoaded", function() {
+        apply_tag_filter();
+    });
+
+    function apply_tag_filter() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const desiredTag = urlParams.get("tag");
+
+        if (desiredTag == null) {
+            return
+        }
+
+        let index = 0;
+        while (true) {
+            const post = document.querySelector("#post-" + index);
+
+            // iterate over all post-0, post-1, ...
+            if (post == null) {
+                break
+            }
+
+            // read all data tags for that post
+            const tags = [];
+            const anchorElements = post.querySelectorAll("a");
+            anchorElements.forEach(anchor => {
+                const dataTag = anchor.getAttribute("data-tag");
+                if (dataTag == null) {
+                    return;
+                }
+                tags.push(dataTag);
+            });
+
+            if (!tags.includes(desiredTag)) {
+                post.style.display = "none";
+            }
+
+            index++;
+        }
+
+        // also change title
+        const headline = document.querySelector("#headline");
+        headline.innerHTML = "Posts with #" + desiredTag;
+    }
+</script>
+{{end}}

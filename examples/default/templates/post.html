@@ -1,0 +1,112 @@
+{{define "content"}}
+<main class="post">
+    <div class="header">
+        <div class="left">
+            <span>{{.Date}}</span>
+            <h1>{{.Title}}</h1>
+        </div>
+        <div class="right">
+            <div class="tags">
+                {{range .Tags}}
+                <a href="/?tag={{.}}">#{{.}}</a>
+                {{end}}
+            </div>
+        </div>
+    </div>
+    <hr>
+    <article>
+        {{.Content}}
+    </article>
+</main>
+{{end}}
+
+{{define "head-extra"}}
+<style>
+    .post article {
+        line-height: 1.7em;
+    }
+
+    /* post header */
+    .post .header {
+        display: flex;
+        align-items: end;
+    }
+    .post .header .left {
+        flex: 1;
+    }
+    .post .header .right {
+        flex: 1;
+        text-align: right;
+    }
+    .post .header h1 {
+        margin-bottom: 0;
+    }
+    .post .header a {
+        color: light-dark(var(--text), var(--text-dark));
+        text-decoration: none;
+        margin-left: 1.2em;
+
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-decoration-color: light-dark(var(--red), var(--red-dark));
+    }
+    .post .header a:hover {
+        font-weight: bold;
+    }
+    .post .header span {
+        color: light-dark(var(--text-gray), var(--text-gray-dark));
+        font-style: italic;
+    }
+
+    /* tables */
+    .post table {
+        border-collapse: collapse;
+
+        /* automatic horizontal scroll */
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    .post td, .post th {
+        padding: 0.2em 0.7em;
+    }
+    .post th {
+        font-weight: 800;
+        background-color: light-dark(var(--bg-table), var(--bg-table-dark));
+    }
+    .post tr:nth-child(even) {
+        background-color: light-dark(var(--bg-table), var(--bg-table-dark));
+    }
+
+    /* code snippets */
+    .post pre {
+        /* rounded corners */
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    /* anchors */
+    .post a {
+        color: light-dark(var(--text), var(--text-dark));
+
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-decoration-color: light-dark(var(--blue), var(--blue-dark));
+    }
+
+    /* quotes */
+    .post blockquote {
+        font-family: "Inconsolata", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        border-left: 5px var(--quote-bar) solid;
+        padding-left: 1em;
+        margin-left: 1em;
+        font-style: italic;
+    }
+</style>
+
+<!-- code highlighting -->
+<link rel="stylesheet" href="code.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script>hljs.highlightAll();</script>
+{{end}}
